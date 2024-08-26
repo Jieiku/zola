@@ -7,7 +7,7 @@ use config::Config;
 use errors::{anyhow, Context, Result};
 use libs::ahash::{HashMap, HashSet};
 use libs::image::codecs::jpeg::JpegEncoder;
-use libs::image::imageops::FilterType;
+use libs::image::{avif::AvifEncoder, imageops::FilterType, ColorType};
 use libs::image::{EncodableLayout, ImageFormat};
 use libs::rayon::prelude::*;
 use libs::{image, webp};
@@ -61,6 +61,16 @@ impl ImageOp {
             Format::Jpeg(q) => {
                 let mut encoder = JpegEncoder::new_with_quality(&mut buffered_f, q);
                 encoder.encode_image(&img)?;
+            }
+            Format::Avif(q) => {
+                let mut avif: Vec<u8> = Vec::new();
+                AvifEncoder::new_with_speed_quality(&mut avif, 1, q).write_image(
+                    &img.as_bytes(),
+                    img.dimensions().0,
+                    img.dimensions().1,
+                    ColorType::Rgb8,
+                )?;
+                std::io::Write::write_all(&mut f, &avif)?;
             }
             Format::WebP(q) => {
                 let encoder = webp::Encoder::from_image(&img)

@@ -10,6 +10,8 @@ pub enum Format {
     Jpeg(u8),
     /// PNG
     Png,
+    /// AVIF
+    Avif(u8),
     /// WebP, The `u8` argument is WebP quality (in percent), None meaning lossless.
     WebP(Option<u8>),
 }
@@ -31,6 +33,7 @@ impl Format {
             }
             "jpeg" | "jpg" => Ok(Jpeg(jpg_quality)),
             "png" => Ok(Png),
+            "avif" => Ok(Avif(quality)),
             "webp" => Ok(WebP(quality)),
             _ => Err(anyhow!("Invalid image format: {}", format)),
         }
@@ -43,6 +46,7 @@ impl Format {
         match *self {
             Png => "png",
             Jpeg(_) => "jpg",
+            Avif(_) => "avif",
             WebP(_) => "webp",
         }
     }
@@ -56,6 +60,7 @@ impl Hash for Format {
         let q = match *self {
             Png => 0,
             Jpeg(q) => 1001 + q as u16,
+            Avif(q) => 101 + q as u16,
             WebP(None) => 2000,
             WebP(Some(q)) => 2001 + q as u16,
         };

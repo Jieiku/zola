@@ -33,11 +33,12 @@ resize_image(path, width, height, op, format, quality)
     - `"auto"`
     - `"jpg"`
     - `"png"`
+    - `"avif"`
     - `"webp"`
 
   The default is `"auto"`, this means that the format is chosen based on input image format.
   JPEG is chosen for JPEGs and other lossy formats, and PNG is chosen for PNGs and other lossless formats.
-- `quality` (_optional_): JPEG or WebP quality of the resized image, in percent. Only used when encoding JPEGs or WebPs; for JPEG default value is `75`, for WebP default is lossless.
+- `quality` (_optional_): JPEG, Avif, or WebP quality of the resized image, in percent. Only used when encoding JPEGs, Avif, or WebPs; for JPEG default value is `75`, for WebP default is lossless.
 
 ### Image processing and return value
 
