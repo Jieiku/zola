@@ -33,7 +33,7 @@ impl Format {
             }
             "jpeg" | "jpg" => Ok(Jpeg(jpg_quality)),
             "png" => Ok(Png),
-            "avif" => Ok(Avif(quality)),
+            "avif" => Ok(Avif(jpg_quality)),
             "webp" => Ok(WebP(quality)),
             _ => Err(anyhow!("Invalid image format: {}", format)),
         }
